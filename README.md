@@ -75,6 +75,20 @@ To change a price or add a dish, edit [lib/data/menu_data.dart](lib/data/menu_da
 
 The shop runs past midnight, so a business day is counted from 5 AM to 5 AM. An order taken at 1 AM belongs to the night before, and order numbers restart at 1 with each new business day.
 
+## The logo
+
+A white OC monogram in Arial Black on a red diagonal gradient, warm at the top left and deep at the bottom right. It ships as a full bleed legacy icon plus adaptive background, foreground and monochrome layers, so it masks correctly to a circle or a squircle and picks up the system tint on Android 13 themed icons.
+
+The source art is generated rather than drawn by hand. To change the colour, the letters or the weight, edit [tool/make_icon.py](tool/make_icon.py) and run:
+
+```bash
+pip install pillow
+python tool/make_icon.py
+dart run flutter_launcher_icons
+```
+
+The first command writes the four layers into `assets/icon`, the second slices them into every Android density. `assets/icon` is source art only and is not bundled into the APK.
+
 ## Building it
 
 Needs the Flutter SDK and the Android toolchain.
@@ -96,6 +110,8 @@ flutter run
 ## Layout
 
 ```
+assets/icon/                    logo source art, four layers
+tool/make_icon.py               regenerates the logo
 lib/
   main.dart                     app entry
   theme.dart                    dark palette and status colours
