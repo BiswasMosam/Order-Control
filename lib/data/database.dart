@@ -127,11 +127,10 @@ class OrderDatabase {
   Future<List<Order>> activeOrders() =>
       _query('is_completed = 0', const [], 'created_at ASC');
 
-  Future<List<Order>> ordersForDay(DateTime day) => _query(
-    'business_day = ?',
-    [businessDayOf(day).millisecondsSinceEpoch],
-    'created_at DESC',
-  );
+  /// [day] must already be a business day from [businessDayOf]. Normalising
+  /// again here would push a midnight value back onto the previous day.
+  Future<List<Order>> ordersForDay(DateTime day) =>
+      _query('business_day = ?', [day.millisecondsSinceEpoch], 'created_at DESC');
 
   Future<List<Order>> _query(
     String where,

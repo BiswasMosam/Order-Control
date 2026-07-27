@@ -81,6 +81,15 @@ void main() {
       expect(businessDayOf(DateTime(2026, 7, 27, 4, 59)), DateTime(2026, 7, 26));
       expect(businessDayOf(DateTime(2026, 7, 27, 5, 0)), DateTime(2026, 7, 27));
     });
+
+    test('normalising twice loses a day, so callers must do it once', () {
+      // A business day is midnight, and midnight is before the 5 AM rollover,
+      // so feeding one back in walks it backwards. OrderDatabase.ordersForDay
+      // therefore takes an already-normalised day and does not re-normalise.
+      final once = businessDayOf(DateTime(2026, 7, 27, 21, 0));
+      expect(once, DateTime(2026, 7, 27));
+      expect(businessDayOf(once), DateTime(2026, 7, 26));
+    });
   });
 
   group('settled state', () {

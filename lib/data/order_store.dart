@@ -33,7 +33,7 @@ class OrderStore extends ChangeNotifier {
 
   Future<void> load() async {
     _active = await _db.activeOrders();
-    _today = await _db.ordersForDay(DateTime.now());
+    _today = await _db.ordersForDay(businessDayOf(DateTime.now()));
     _loaded = true;
     notifyListeners();
   }
